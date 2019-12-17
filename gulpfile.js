@@ -4,28 +4,28 @@ var cssmin = require('gulp-cssmin');
 var rename = require("gulp-rename");
 var watch = require('gulp-watch');
 
-gulp.task('less', function () {
+function task_less() {
     return gulp.src('static/less/app.less')
         .pipe(less())
         .pipe(gulp.dest('static/css'));
-});
-;
+}
 
-gulp.task('cssmin', ['less'], function () {
-    gulp.src('static/css/app.css')
+function task_cssmin() {
+    return gulp.src('static/css/app.css')
         .pipe(cssmin({
             keepSpecialComments: 0
         }))
-        .pipe(rename({suffix: '.min'}))
+        .pipe(rename({ suffix: '.min' }))
         .pipe(gulp.dest('static/css'));
-});
+}
 
-gulp.task('watch', function() {
-    gulp.watch('static/less/**/*.less', ['cssmin']);
-});
+function task_watch() {
+    return gulp.watch('static/less/**/*.less', ['cssmin']);
+}
 
-gulp.task('build', ['less', 'cssmin'], function () {});
 
-gulp.task('default', function() {
-    gulp.start('cssmin')
-});
+exports.task_less = task_less;
+exports.task_cssmin = task_cssmin;
+exports.task_watch = task_watch;
+exports.task_build = gulp.series(task_less, task_cssmin);
+exports.task_default = task_cssmin;
